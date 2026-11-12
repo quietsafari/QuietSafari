@@ -1,4 +1,4 @@
-## Hi there 👋
+## THE WEBSITE IS CURRENTLY DOWN. WE ARE WORKING ON IT. IF YOU HAVE ANY REQUESTS CONTACT ME AT quietsafariapp@gmail.com
 
 <!--
 **quietsafari/QuietSafari** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.

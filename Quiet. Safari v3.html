@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiet Class Safari</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--ink:#111a33;--mut:#5b6b8c;--line:#cfd6e6}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#d9c28a;color:var(--ink);overflow:hidden}
+button,select,input{font:inherit;color:var(--ink)}
+button{border:0;cursor:pointer}
+#scene{position:fixed;inset:0;transition:background .8s}
+#bg,#fx{position:absolute;inset:0;pointer-events:none}
+.lay{position:absolute;left:0;width:100%}
+.cl{animation:cd 40s ease-in-out infinite alternate}
+@keyframes cd{to{transform:translateX(50px)}}
+.fxp{position:absolute;border-radius:50%;pointer-events:none}
+.bub{background:rgba(255,255,255,.35);animation:rise 9s linear infinite}
+.snow{background:#fff;opacity:.9;animation:fall 10s linear infinite}
+@keyframes rise{from{transform:translateY(0);opacity:0}20%{opacity:1}to{transform:translateY(-70vh);opacity:0}}
+@keyframes fall{from{transform:translateY(-5vh);opacity:0}15%{opacity:1}to{transform:translateY(95vh);opacity:0}}
+.animal{position:absolute;font-size:clamp(40px,8vw,84px);line-height:1;transition:left 4s linear,top 4s linear,opacity 1s;user-select:none;pointer-events:none;filter:drop-shadow(0 4px 3px rgba(0,0,0,.25))}
+.round{width:58px;height:58px;border-radius:50%;background:#fbfaf7;font-size:24px;padding:0;display:grid;place-items:center;box-shadow:0 3px 12px rgba(0,0,0,.18);position:relative;flex:none}
+.round.off::after{content:"";position:absolute;left:13px;right:13px;top:50%;height:3px;background:#e53935;transform:rotate(-45deg);border-radius:2px}
+.pillb{background:#fbfaf7;border-radius:999px;padding:0 20px;height:58px;font-size:19px;font-weight:600;box-shadow:0 3px 12px rgba(0,0,0,.18);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.grp{display:flex;gap:10px}
+#top{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;display:flex;justify-content:space-between;z-index:5}
+#mbar{position:fixed;top:calc(82px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(520px,calc(100% - 24px));background:rgba(251,250,247,.92);border-radius:16px;padding:8px 12px;z-index:5;box-shadow:0 3px 12px rgba(0,0,0,.15)}
+.mrow{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:4px}
+.bar{height:24px;border-radius:12px;background:#e3e7f1;position:relative;overflow:hidden}
+.fill{height:100%;width:0;background:#5fd196;border-radius:12px;transition:width .1s,background .2s}
+.fill.hi{background:#f6a04d}
+.line{position:absolute;top:0;bottom:0;width:3px;background:var(--ink)}
+#row2{position:fixed;left:12px;right:12px;bottom:calc(92px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;z-index:5}
+#dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;background:#fbfaf7;padding:10px;border-radius:999px;z-index:5;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+#dock button,.out{border:2px solid var(--line);background:#fff;border-radius:999px;height:50px;padding:0 20px;font-size:18px}
+.out{border-radius:12px;height:auto;padding:12px 18px;font-weight:500}
+#ptag{position:fixed;top:calc(150px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:4;font-weight:700;background:rgba(17,26,51,.75);color:#fff;padding:6px 18px;border-radius:999px;display:none}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(170px + env(safe-area-inset-bottom,0px));background:rgba(17,26,51,.88);color:#fff;padding:9px 16px;border-radius:14px;font-weight:600;z-index:12;opacity:0;transition:opacity .4s;pointer-events:none;text-align:center;max-width:90%}
+#set{position:fixed;inset:0;background:#fff;z-index:10;overflow:auto;display:none;padding-top:env(safe-area-inset-top,0px)}
+#set.open{display:block}
+.sw{max-width:640px;margin:0 auto;padding:18px 18px 40px}
+.hd{display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:34px}
+h4{margin:26px 0 10px;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.hd2{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--mut);font-size:18px;margin:10px 0}
+.sel{width:100%;padding:16px;border:2px solid var(--line);border-radius:12px;background:#fff;font-size:20px}
+.stat{background:#d9f6e6;color:#1d6b43;border-radius:999px;padding:8px 18px;font-weight:700;font-size:18px}
+.stat.bad{background:#fde3d3;color:#9a4a12}.stat.pz{background:#e3e7f1;color:var(--mut)}
+#sbar{height:46px;border-radius:14px}#sbar .fill{border-radius:14px}
+#limTxt{color:var(--mut);font-size:18px;margin:14px 0 6px}
+.lrow{display:flex;gap:12px;align-items:center}
+.lrow input[type=range]{flex:1;height:28px}
+.num{width:92px;padding:10px;border:2px solid var(--line);border-radius:10px;font-size:20px}
+.cards{display:grid;gap:10px;grid-template-columns:repeat(3,1fr);margin-top:16px}
+.cards.two{grid-template-columns:1fr 1fr}
+.c2{border:2px solid var(--line);border-radius:12px;padding:14px;background:#fff;text-align:left;font-weight:700;font-size:20px}
+.c2 small{display:block;font-weight:400;color:var(--mut);font-size:17px;margin-top:4px}
+.c2.on{background:#111827;border-color:#111827;color:#fff}.c2.on small{color:#c8d0e0}
+.cal{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f0f3f9;border-radius:14px;padding:16px 18px;margin-top:16px;font-size:20px}
+.cal span{color:var(--mut);font-size:17px}
+.tg{appearance:none;-webkit-appearance:none;width:54px;height:30px;border-radius:15px;background:#cbd3e3;position:relative;border:0;flex:none}
+.tg:checked{background:#5fd196}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.tg:checked::after{left:27px}
+.chk{display:flex;align-items:center;gap:12px;font-size:20px;color:var(--mut);margin:16px 0}
+.chk input{width:26px;height:26px}
+.note{color:var(--mut);font-size:16px;margin-top:30px}
+.modal{position:fixed;inset:0;background:rgba(10,18,30,.5);z-index:10;display:none;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.modal.open{display:flex}
+.mc{background:#fff;border-radius:22px;padding:22px;width:min(600px,100%);max-height:100%;overflow:auto}
+.x{background:none;font-size:30px;color:var(--mut);padding:4px 10px}
+.muted{color:var(--mut);font-size:19px;margin:8px 0 14px}
+.chip{display:inline-block;border:2px solid var(--line);border-radius:999px;padding:10px 20px;margin:0 6px 8px 0;background:#fff;font-size:19px}
+.chip.on{background:#111827;color:#fff;border-color:#111827}
+.inf{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#97a3bd;color:#fff;font-size:14px;font-weight:700;margin-left:6px;cursor:pointer;vertical-align:middle;text-transform:none;letter-spacing:0}
+.hint{font-size:15px;color:var(--mut);margin:-4px 0 8px;text-transform:none;letter-spacing:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pc{border:2px solid #dfe4f0;border-radius:14px;padding:12px 6px;text-align:center;background:#fff}
+.pc.rare{border-color:#f2d04b;background:#fffbea}
+.pc .e{font-size:58px;line-height:1.2}
+.pc .nm{font-weight:700;font-size:19px}.pc .st{color:var(--mut);font-size:16px}
+.pc.lock .e{filter:brightness(0);opacity:.18}
+#start{position:fixed;inset:0;z-index:11;background:rgba(10,20,30,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:20px;color:#fff}
+#start h1{font-size:clamp(28px,6vw,52px)}
+#go{font-size:20px;padding:14px 28px;background:#3ddc84;border-radius:12px;color:#12202b;font-weight:700}
+#joinBox{position:absolute;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center}
+.mini{font-size:14px;padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.2);color:#fff;font-weight:600}
+#codeIn{display:none;width:110px;padding:8px;border-radius:10px;border:2px solid #fff;background:rgba(255,255,255,.12);color:#fff;font-size:18px;text-align:center;letter-spacing:.2em;text-transform:uppercase}
+.cd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#f0f3f9;border-radius:14px;padding:14px 18px}
+#codeTxt{font-size:38px;font-weight:800;letter-spacing:.18em}
+#watch{color:var(--mut);font-size:17px;flex:1}
+.viewonly{display:none}.viewer .viewonly{display:block}.viewer .hostonly{display:none}
+.viewer #reset,.viewer #pause,.viewer #habBtn,.viewer #micBtn{display:none}
+.viewer .ro{opacity:.8}
+#msg{font-size:14px;color:#ffd27a;max-width:420px;min-height:18px}
+</style>
+</head>
+<body>
+<div id="scene"><div id="bg"></div><div id="fx"></div></div>
+
+<div id="top">
+  <div class="grp"><div class="round">🦁</div><div class="pillb" id="pCount">🐾 Animals: <span id="count">0</span></div></div>
+  <div class="pillb" id="pOwn">🏆 <span id="own">0</span></div>
+</div>
+<div id="mbar"><div class="mrow"><span>🔊 Noise</span><span><span id="lvl">0</span>%</span></div><div class="bar"><div class="fill" id="mfill"></div><div class="line" id="mline"></div></div></div>
+<div id="ptag">Paused</div>
+
+<div id="row2">
+  <div class="grp"><button class="round" id="help" aria-label="Help">❔</button></div>
+  <div class="grp"><button class="round" id="habBtn" aria-label="Habitats">🏞️</button><button class="round" id="petsBtn" aria-label="Animals">🐾</button></div>
+</div>
+<div id="dock"><button id="reset">Reset</button><button id="pause" aria-label="Pause">❚❚</button><button id="gear">Settings</button></div>
+<div id="toast"></div>
+
+<div id="set"><div class="sw">
+  <div class="hd"><h1>Settings</h1><button class="out" id="closeS">Close</button></div>
+  <div class="viewonly"><h4>Watching a class</h4><div class="note" style="margin-top:0">You can see the settings, but only the teacher can change them.</div><button class="out" id="leave" style="margin-top:12px">Leave class</button></div>
+  <div class="hostonly"><h4>Class code</h4><div class="cd"><div id="codeTxt">…</div><span id="watch">Connecting…</span><button class="out" id="newCode">New code</button></div><div class="note" style="margin-top:8px">On another device, open this website and tap “Enter code”. They can watch, but can’t change anything.</div></div>
+  <div class="hostonly"><h4>Microphone</h4>
+  <select id="mic" class="sel"><option value="">Default microphone</option></select></div>
+  <div id="ro" class="ro">
+  <div class="hd2"><h4 style="margin:0">Noise meter</h4><label style="display:flex;align-items:center;gap:12px">Show on screen <input type="checkbox" class="tg" id="showMeter"></label></div>
+  <div class="hd2"><span>Current volume</span><span class="stat" id="stat">Animals are arriving</span></div>
+  <div class="bar" id="sbar"><div class="fill" id="sfill"></div><div class="line" id="sline"></div></div>
+  <div id="limTxt"></div>
+  <div class="lrow"><input type="range" id="limit" min="0" max="100"><input type="number" class="num" id="limN" min="0" max="100"></div>
+  <div class="cards" id="presets"></div>
+  <div class="cal hostonly"><div>Calibration<br><span id="calTxt">Fit the meter to your microphone</span></div><button class="out" id="cal">Calibrate</button></div>
+  <h4>When it’s too loud</h4>
+  <div class="cards two" id="loud"></div>
+  <h4>How often animals arrive</h4>
+  <div class="cards" id="freqs"></div>
+  <div class="hd2" style="justify-content:flex-start;color:var(--ink)">About one animal every <input type="number" class="num" id="freq" min="0.1" max="120" step="any"> minutes</div>
+  <div class="hd2" style="justify-content:flex-start;color:var(--ink)">Animals arriving each time <input type="number" class="num" id="num" min="1" max="20" step="1"></div>
+  <label class="chk"><input type="checkbox" id="showCount"> Count animals as they arrive</label>
+  <label class="chk"><input type="checkbox" id="showOwn"> Show how many pets I have</label>
+  </div>
+  <div class="hostonly"><h4>Try it out</h4>
+  <button class="out" id="all">Bring out every animal</button></div>
+  <div class="note">Settings are saved on this device only. Microphone audio never leaves the device.</div>
+</div></div>
+
+<div class="modal" id="am"><div class="mc">
+  <div class="hd"><h1>Animals</h1><button class="x" id="amX" aria-label="Close">✕</button></div>
+  <div class="muted" id="aSub"></div><div id="chips"></div><div id="abody"></div>
+</div></div>
+<div class="modal" id="hm"><div class="mc">
+  <div class="hd"><h1>Habitats</h1><button class="x" id="hmX" aria-label="Close">✕</button></div>
+  <div style="margin-top:14px" id="hchips"></div>
+</div></div>
+
+<div class="modal" id="cm" style="z-index:13"><div class="mc" style="width:min(380px,100%);text-align:center"><div id="cmT" style="font-size:22px;font-weight:700;margin-bottom:18px"></div><div style="display:flex;gap:12px"><button class="out" id="cmN" style="flex:1">No</button><button class="out" id="cmY" style="flex:1;background:#111827;color:#fff;border-color:#111827">Yes</button></div></div></div>
+
+<div id="start">
+  <h1>🦁 Quiet Class Safari 🐘</h1>
+  <div>Stay quiet and the animals will come. Get loud and they run away!</div>
+  <button id="go">🎤 Start listening</button>
+  <div style="font-size:14px;font-weight:700;opacity:.9">Made By George Dougias</div>
+  <div id="msg"></div>
+  <div id="joinBox"><input id="codeIn" maxlength="5" placeholder="CODE" autocomplete="off"><button class="mini" id="joinBtn">Enter code</button></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script>
+const A=[
+["🦁","Lion","r","g","sa"],["🐘","Elephant","r","g","sa"],["🦒","Giraffe","u","g","sa"],["🦓","Zebra","c","g","sa"],["🦏","Rhino","r","g","sa"],["🐆","Leopard","r","g","sa,ju"],["🦛","Hippo","u","g","sa"],["🦬","Bison","c","g","sa,fo"],["🐗","Warthog","c","g","sa,fo"],["🐃","Buffalo","c","g","sa,fa"],["🦅","Eagle","u","s","sa,de,ou,fo"],["🦩","Flamingo","u","g","sa"],
+["🐒","Monkey","c","g","ju"],["🦍","Gorilla","u","g","ju"],["🐅","Tiger","r","g","ju"],["🦜","Parrot","c","s","ju,ou"],["🐍","Snake","c","g","ju,de,ou"],["🦥","Sloth","u","g","ju"],["🐸","Frog","c","g","ju"],["🦚","Peacock","u","g","ju"],["🦋","Butterfly","c","s","ju,fo,fa"],["🐊","Crocodile","u","g","ju,ou"],["🦕","Dino","r","g","ju"],
+["🐧","Penguin","c","g","ar"],["🐻‍❄️","Polar Bear","r","g","ar"],["🦭","Seal","c","g","ar"],["🦊","Fox","c","g","ar,fo"],["🦌","Deer","c","g","ar,fo"],["🐇","Rabbit","c","g","ar,de,fo"],["🦉","Owl","u","s","ar,fo"],["🐺","Wolf","u","g","ar,fo"],
+["🐠","Tropical Fish","c","w","oc"],["🐟","Fish","c","w","oc"],["🐡","Pufferfish","c","w","oc"],["🦈","Shark","u","w","oc"],["🐙","Octopus","u","w","oc"],["🐬","Dolphin","u","w","oc"],["🐳","Whale","r","w","oc"],["🐋","Blue Whale","r","w","oc"],["🦑","Squid","u","w","oc"],["🐢","Turtle","c","w","oc"],["🦀","Crab","c","g","oc"],["🦞","Lobster","c","g","oc"],["🪼","Jellyfish","u","w","oc"],
+["🐪","Camel","c","g","de"],["🐫","Bactrian Camel","u","g","de"],["🦂","Scorpion","u","g","de"],["🦎","Lizard","c","g","de,ou"],["🦔","Hedgehog","c","g","de,fo"],
+["🐻","Bear","u","g","fo"],["🐿️","Squirrel","c","g","fo"],["🦝","Raccoon","c","g","fo"],["🦫","Beaver","u","g","fo"],
+["🐄","Cow","c","g","fa"],["🐖","Pig","c","g","fa"],["🐑","Sheep","c","g","fa"],["🐓","Rooster","c","g","fa"],["🐴","Horse","u","g","fa"],["🦆","Duck","c","g","fa"],["🐐","Goat","c","g","fa"],["🐕","Dog","c","g","fa"],["🐈","Cat","c","g","fa"],["🦃","Turkey","c","g","fa"],["🦄","Unicorn","r","g","fa"],
+["🦘","Kangaroo","c","g","ou"],["🐨","Koala","u","g","ou"],["🦖","T-Rex","r","g","ou"]
+];
+const HO=["sa","oc","ju","ar","fo","de","fa","ou"];
+const HN={sa:"Savanna",oc:"Coral reef",ju:"Jungle",ar:"Arctic",fo:"Forest",de:"Desert",fa:"Farm",ou:"Outback"};
+// flat-style scenery: sky colours, sun, far hills, ground colours, props [type,x,y,scale,colour]
+const H={
+sa:{s:["#9cc9dc","#f3e2b4"],sun:[70,90,"#fff1c0"],far:"#d1b0a1",mt:["M230 140L400 20V140Z","#dfc7b8"],g:["#ecd7a0","#e0c27e","#d4b06a"],pr:[["pond",345,205,1],["ac",40,215,1,"#8fa865"],["gr",110,225,.9,"#c9a15a"],["bu",190,240,.8,"#8fa070"],["gr",360,240,1,"#e0c27e"],["gr",270,300,1.1,"#c9a15a"],["ro",80,330,.9,"#b59a8a"],["gr",350,345,1.2,"#e8cf8c"],["bu",300,385,1,"#8fa070"]]},
+ju:{s:["#74c5a8","#e3f5b8"],sun:[320,70,"#fff7c9"],far:"#4e9b5a",g:["#4aa04a","#3a8a3e","#2f7433"],pr:[["pa",50,190,1.1,"#2f8f47"],["pa",150,170,.9,"#3aa056"],["pa",350,185,1.2,"#2f8f47"],["tr",260,210,.9,"#2c7a3a"],["gr",100,250,1,"#7ed06a"],["fl",200,290,1,"#ff7aa8"],["gr",330,300,1.1,"#7ed06a"],["bu",60,350,1,"#2a6a30"],["fl",280,350,1,"#ffd34d"]]},
+ar:{s:["#9fd0e6","#f2fbff"],sun:[90,80,"#ffffff"],far:"#cfe2ee",mt:["M110 140L240 30L380 140Z","#e4f0f7"],g:["#fafdff","#e6f2f9","#d3e6f1"],pr:[["mo",300,160,1,"#bcd5e4"],["pi",60,205,1.1,"#3b7a63"],["pi",360,215,.9,"#3b7a63"],["ic",200,250,1.2],["ic",90,330,1],["ro",330,335,1,"#b8cbd6"]]},
+oc:{s:["#53c6f0","#0a3e7a"],sun:[320,50,"#e8fbff"],gt:320,g:["#e8d7a0","#d6bd7c","#c4a768"],pr:[["co",50,345,1.3,"#ff7a8a"],["co",150,360,1,"#ffb347"],["ke",250,360,1.2,"#2aa66a"],["co",340,350,1.4,"#b46bd6"],["ke",20,385,1,"#2aa66a"],["ro",200,388,.8,"#9aa5ae"],["co",290,392,.8,"#ff7a8a"]]},
+de:{s:["#ffbd7b","#fff0c9"],sun:[200,100,"#fff4c8"],far:"#e3a96a",g:["#f1c98a","#e5b36e","#d79f58"],pr:[["ca",60,210,1.2,"#6a9a4a"],["ca",330,200,1.4,"#6a9a4a"],["ca",190,230,.8,"#6a9a4a"],["ro",120,290,1,"#b58a64"],["gr",300,300,1,"#d9a560"],["ca",360,350,1,"#6a9a4a"],["ro",200,365,1.1,"#b58a64"]]},
+fo:{s:["#a7d6f2","#e6f5d3"],sun:[310,80,"#fffbd0"],far:"#7fae6a",g:["#6aa84a","#5a9540","#4a8036"],pr:[["pi",40,200,1.3,"#2f6b3a"],["pi",110,215,1,"#3a7a45"],["tr",340,210,1.1,"#3a8a45"],["pi",385,190,1.2,"#2f6b3a"],["tr",230,230,.8,"#3f8f4a"],["mu",90,300,1,"#d9534f"],["gr",300,310,1,"#8ccf6a"],["mu",340,350,.9,"#e8a050"],["ro",150,365,1,"#9a9a8a"]]},
+fa:{s:["#8fd3ff","#fff3c9"],sun:[330,70,"#fff6c0"],far:"#9ed06a",g:["#86c95a","#74b84c","#62a43f"],pr:[["ho",70,215,1.2],["tr",330,205,1.2,"#3f9a4a"],["tr",260,218,.8,"#3f9a4a"],["gr",150,290,1,"#a6dd7e"],["fl",250,300,1,"#ffd34d"],["fl",90,350,1,"#ff8fb3"],["fl",330,340,1,"#ffd34d"],["gr",200,378,1.2,"#a6dd7e"]]},
+ou:{s:["#ff9d6c","#ffe2a8"],sun:[90,90,"#fff0b8"],far:"#d9794a",mt:["M200 140Q290 60 390 140Z","#c46a3e"],g:["#e08a52","#d17944","#bf6838"],pr:[["tr",60,215,.9,"#7a9a4a"],["ac",300,230,.9,"#7a9a4a"],["gr",150,260,1,"#e8b070"],["ro",90,320,1.1,"#a0644a"],["gr",320,330,1.1,"#e8b070"],["ca",370,360,.9,"#7a9a4a"]]}
+};
+const PR={
+ac:c=>`<path d="M-2 0Q0-30-14-48M2 0Q0-30 16-50M0-22V0" stroke="#6b4a3a" stroke-width="4" fill="none"/><ellipse cy="-52" rx="40" ry="10" fill="${c}"/>`,
+pa:c=>`<path d="M0 0Q6-40-4-80" stroke="#7a5a3a" stroke-width="6" fill="none"/><path d="M-4-80Q-40-95-55-70Q-30-85-4-80M-4-80Q30-100 55-72Q28-88-4-80M-4-80Q-10-110-30-112Q-10-100-4-80" fill="${c}"/>`,
+pi:c=>`<rect x="-3" y="-8" width="6" height="10" fill="#6b4a3a"/><path d="M0-72L-20-32H20ZM0-48L-26-8H26Z" fill="${c}"/>`,
+tr:c=>`<rect x="-3" y="-30" width="6" height="32" fill="#6b4a3a"/><circle cy="-42" r="24" fill="${c}"/>`,
+gr:c=>`<path d="M0 0Q-6-30-10-50Q2-25 0 0M0 0Q2-40 8-60Q6-25 0 0M0 0Q10-25 22-40Q8-15 0 0" fill="${c}"/>`,
+ro:c=>`<path d="M-22 0Q-20-22 0-24Q18-22 24 0Z" fill="${c}"/>`,
+bu:c=>`<ellipse rx="26" ry="14" fill="${c}"/><ellipse cx="-14" cy="4" rx="16" ry="10" fill="${c}"/>`,
+pond:()=>`<ellipse rx="75" ry="22" fill="#c9a26a"/><ellipse rx="64" ry="16" fill="#9bc3cf"/>`,
+ca:c=>`<rect x="-6" y="-50" width="12" height="52" rx="6" fill="${c}"/><path d="M-6-22H-18V-36M6-30H18V-42" stroke="${c}" stroke-width="7" fill="none" stroke-linecap="round"/>`,
+co:c=>`<path d="M0 0V-30M0-12L-14-28M0-20L14-38" stroke="${c}" stroke-width="8" stroke-linecap="round" fill="none"/>`,
+ke:c=>`<path d="M0 0Q-10-30 0-60Q10-90 0-110" stroke="${c}" stroke-width="7" fill="none" stroke-linecap="round"/>`,
+mo:c=>`<path d="M-60 0L0-80L60 0Z" fill="${c}"/><path d="M-14-58L0-80L14-58L6-52L0-60L-7-52Z" fill="#fff"/>`,
+ic:()=>`<path d="M-18 0L-10-26L10-30L20 0Z" fill="#dff3fb"/><path d="M-10-26L10-30L4-12Z" fill="#fff"/>`,
+ho:()=>`<rect x="-26" y="-34" width="52" height="34" fill="#d9573f"/><path d="M-32-34L0-60L32-34Z" fill="#8a3b2a"/><rect x="-6" y="-20" width="12" height="20" fill="#f3e3c3"/>`,
+fl:c=>`<path d="M0 0V-18" stroke="#3b8f3c" stroke-width="3"/><circle cy="-20" r="7" fill="${c}"/>`,
+mu:c=>`<rect x="-3" y="-10" width="6" height="12" fill="#f3e9d2"/><path d="M-14-8Q0-30 14-8Z" fill="${c}"/>`
+};
+const cloud=(x,y,s)=>`<g transform="translate(${x} ${y}) scale(${s})"><g class="cl"><path d="M0 30Q-4 8 22 12Q30-8 56 6Q80-2 84 24Q96 30 90 40H4Q-6 40 0 30Z" fill="#f6f2e4" opacity=".95"/></g></g>`;
+function scene(k){
+  const h=H[k],gt=h.gt||140,oc=k==="oc";
+  let a=`<svg class="lay" viewBox="0 0 400 300" preserveAspectRatio="xMidYMin slice" style="top:0;height:62%"><circle cx="${h.sun[0]}" cy="${h.sun[1]}" r="62" fill="${h.sun[2]}" opacity=".22"/><circle cx="${h.sun[0]}" cy="${h.sun[1]}" r="44" fill="${h.sun[2]}" opacity=".45"/><circle cx="${h.sun[0]}" cy="${h.sun[1]}" r="30" fill="${h.sun[2]}"/>`;
+  if(oc)a+=`<path d="M110 0H160L270 300H90Z M250 0H275L360 300H300Z" fill="#fff" opacity=".07"/>`;
+  else a+=cloud(10,50,1)+cloud(250,30,.9)+cloud(140,150,.8)+`<path d="M110 120q4-4 8 0q4-4 8 0M135 108q4-4 8 0q4-4 8 0M95 135q4-4 8 0q4-4 8 0" stroke="#7a6a6a" fill="none"/>`;
+  a+="</svg>";
+  let g=`<svg class="lay" viewBox="0 0 400 400" preserveAspectRatio="xMidYMax slice" style="bottom:0;height:62%">`;
+  if(h.mt)g+=`<path d="${h.mt[0]}" fill="${h.mt[1]}"/>`;
+  if(h.far)g+=`<path d="M0 ${gt-10}Q90 ${gt-60} 190 ${gt-20}T400 ${gt-40}V400H0Z" fill="${h.far}"/>`;
+  g+=`<path d="M0 ${gt}Q200 ${gt-20} 400 ${gt+5}V400H0Z" fill="${h.g[0]}"/><path d="M0 ${gt+80}Q200 ${gt+55} 400 ${gt+85}V400H0Z" fill="${h.g[1]}"/><path d="M0 ${gt+170}Q200 ${gt+150} 400 ${gt+175}V400H0Z" fill="${h.g[2]}"/>`;
+  h.pr.slice().sort((p,q)=>p[2]-q[2]).forEach(([t,x,y,s,c])=>g+=`<g transform="translate(${x} ${y}) scale(${s})">${PR[t](c)}</g>`);
+  g+="</svg>";
+  $("bg").innerHTML=a+g;
+  $("scene").style.background=`linear-gradient(${h.s[0]},${h.s[1]})`;
+  let f="";const bub=oc,snow=k==="ar";
+  if(bub||snow)for(let i=0;i<10;i++){const z=3+Math.random()*7;f+=`<div class="fxp ${bub?"bub":"snow"}" style="left:${Math.random()*100}%;${bub?"top:90%":"top:0"};width:${z}px;height:${z}px;animation-delay:${-Math.random()*9}s"></div>`}
+  $("fx").innerHTML=f;
+}
+
+const D={mic:"",gain:1.5,limit:30,preset:1,num:1,freq:5,loud:"run",showMeter:true,showCount:true,showOwn:true,hab:"sa"};
+let S={...D},own={};
+try{Object.assign(S,JSON.parse(localStorage.getItem("qcs3")||"{}"))}catch(e){}
+try{own=JSON.parse(localStorage.getItem("qcp")||"{}")}catch(e){}
+if(!H[S.hab])S.hab="sa";
+const $=id=>document.getElementById(id);
+const save=()=>{if(V)return;try{localStorage.setItem("qcs3",JSON.stringify(S))}catch(e){}};
+const saveOwn=()=>{if(V)return;try{localStorage.setItem("qcp",JSON.stringify(own))}catch(e){}};
+let animals=[],level=0,rms=0,ctx,an,stream,buf,micOn=false,paused=false,loud=false,held=false,nextAt=Infinity,lastRun=0,cal=null,tt,petHab=S.hab,V=false,vLvl=0,aid=0,vHeld=false;
+
+function toast(t,ms){const e=$("toast");e.textContent=t;e.style.opacity=1;clearTimeout(tt);tt=setTimeout(()=>e.style.opacity=0,ms||2800)}
+let askFn=null;
+function ask(t,y){$("cmT").textContent=t;askFn=y;$("cm").classList.add("open")}
+$("cmN").onclick=()=>$("cm").classList.remove("open");
+$("cmY").onclick=()=>{$("cm").classList.remove("open");if(askFn)askFn()};
+const upd=()=>{$("count").textContent=V?vAn.size:animals.length;$("own").textContent=Object.keys(own).length+"/"+A.length};
+function vis(){$("pCount").style.display=S.showCount?"":"none";$("pOwn").style.display=S.showOwn?"":"none";$("mbar").style.display=S.showMeter?"":"none"}
+
+function clearAnimals(){animals.forEach(a=>{clearInterval(a.timer);a.el.remove()});animals=[];upd()}
+function setHab(k){S.hab=k;scene(k);clearAnimals();save()}
+
+const PRE=[["Silent","No talking at all",10],["Independent","Quiet whispers only",30],["Partner work","Conversation voices",55]];
+const LOUD=[["Animals run away","Everyone freezes, and some run off every 5 seconds until it’s calm","run"],["Pause the scene","Animals hold still and no new ones come out","pause"]];
+const FR=[["Relaxed","about one animal every 8 minutes",8],["Normal","about one animal every 5 minutes",5],["Lively","about one animal every 2 minutes",2]];
+function cards(id,arr,on,click){
+  $(id).innerHTML=arr.map((c,i)=>`<button class="c2 ${on(i)?"on":""}">${c[0]}<small>${c[1]}</small></button>`).join("");
+  [...$(id).children].forEach((b,i)=>b.onclick=()=>click(i));
+}
+function lines(){$("sline").style.left=S.limit+"%";$("mline").style.left=S.limit+"%";$("limTxt").textContent="Animals arrive while the room stays left of the line ("+S.limit+"%)"}
+function ui(){
+  $("limit").value=S.limit;$("limN").value=S.limit;$("freq").value=S.freq;$("num").value=S.num;
+  ["showMeter","showCount","showOwn"].forEach(k=>$(k).checked=S[k]);
+  cards("presets",PRE,i=>S.preset===i,i=>{S.limit=PRE[i][2];S.preset=i;ui();save()});
+  cards("loud",LOUD,i=>S.loud===LOUD[i][2],i=>{S.loud=LOUD[i][2];ui();save()});
+  cards("freqs",FR,i=>S.freq===FR[i][2],i=>{S.freq=FR[i][2];nextAt=performance.now()+S.freq*60000;ui();save()});
+  lines();vis();
+}
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+$("limit").oninput=e=>{S.limit=+e.target.value;S.preset=-1;ui();save()};
+const num=(id,k,a,b,fn)=>{$(id).oninput=e=>{const v=parseFloat(e.target.value);if(isNaN(v))return;S[k]=clamp(v,a,b);if(fn)fn();lines();save()};$(id).onchange=ui};
+num("limN","limit",0,100,()=>S.preset=-1);num("freq","freq",0.1,120);num("num","num",1,20);
+["showMeter","showCount","showOwn"].forEach(k=>$(k).onchange=e=>{S[k]=e.target.checked;vis();save()});
+
+const closeAll=()=>["set","am","hm"].forEach(i=>$(i).classList.remove("open"));
+$("gear").onclick=()=>$("set").classList.add("open");
+$("closeS").onclick=()=>$("set").classList.remove("open");
+$("amX").onclick=()=>$("am").classList.remove("open");
+$("hmX").onclick=()=>$("hm").classList.remove("open");
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
+$("reset").onclick=()=>ask("Are you sure you want to reset?",()=>{clearAnimals();nextAt=performance.now()+3000;toast("Scene reset")});
+$("pause").onclick=()=>{paused=!paused;$("pause").textContent=paused?"▶":"❚❚";$("ptag").style.display=paused?"block":"none"};
+$("help").onclick=()=>toast("Stay quiet and animals arrive. When it gets loud they freeze and run away!",4500);
+$("all").onclick=()=>{A.filter(a=>a[4].split(",").includes(S.hab)).forEach((a,i)=>setTimeout(()=>spawn(a,true),i*250));$("set").classList.remove("open")};
+
+// Animals page
+function chipsHTML(sel){return HO.map(k=>`<button class="chip ${k===sel?"on":""}" data-h="${k}">${HN[k]}</button>`).join("")}
+function renderAnimals(){
+  const L0=A.filter(a=>a[4].split(",").includes(petHab));
+  $("aSub").textContent="My class: "+L0.filter(a=>own[a[0]]).length+" of "+L0.length+" spotted";
+  $("chips").innerHTML=chipsHTML(petHab);
+  const T={c:["Common","These show up the most."],u:["Uncommon","These arrive less often."],r:["Rare","Hard to get. They only come when the room is extra quiet."]};let h="";
+  for(const t of["c","u","r"]){const L=L0.filter(a=>a[2]===t);if(!L.length)continue;
+    h+=`<h4>${T[t][0]} <span class="inf" data-t="${t}">i</span></h4><div class="hint" id="hint_${t}"></div><div class="grid">`+L.map(a=>`<div class="pc ${t==="r"?"rare":""} ${own[a[0]]?"":"lock"}"><div class="e">${a[0]}</div><div class="nm">${a[1]}</div><div class="st">${own[a[0]]?"Seen "+own[a[0]]+"×":"Not seen yet"}</div></div>`).join("")+"</div>"}
+  $("abody").innerHTML=h;
+  $("abody").onclick=e=>{const t=e.target.dataset.t;if(t){const el=$("hint_"+t);el.textContent=el.textContent?"":T[t][1]}};
+  [...$("chips").children].forEach(b=>b.onclick=()=>{petHab=b.dataset.h;renderAnimals()});
+}
+$("petsBtn").onclick=()=>{petHab=S.hab;renderAnimals();$("am").classList.add("open")};
+$("habBtn").onclick=()=>{$("hchips").innerHTML=chipsHTML(S.hab);[...$("hchips").children].forEach(b=>b.onclick=()=>{const k=b.dataset.h;$("hm").classList.remove("open");if(k!==S.hab)ask("Are you sure you want to switch to "+HN[k]+"? The animals on screen will leave.",()=>setHab(k))});$("hm").classList.add("open")};
+
+// Animals on the map
+function pick(){
+  const L=A.filter(a=>a[4].split(",").includes(S.hab));
+  const r=Math.random(),q=level<S.limit*.5;
+  const t=r<.04&&q?"r":r<.3?"u":"c";   // rare: 4% chance and the room must be extra quiet
+  let P=L.filter(a=>a[2]===t);if(!P.length)P=L.filter(a=>a[2]==="c");
+  return P[Math.floor(Math.random()*P.length)];
+}
+function pos(z){
+  const x=5+Math.random()*85;let y;
+  if(z==="s")y=18+Math.random()*28;else if(z==="w")y=22+Math.random()*58;
+  else y=S.hab==="oc"?86+Math.random()*6:64+Math.random()*26;
+  return[x,y];
+}
+function spawn(an_,free){
+  an_=an_||pick();if(!an_)return;const zone=an_[3];
+  if(!free){if(!own[an_[0]])toast("✨ New animal: "+an_[0]+" "+an_[1]+(an_[2]==="r"?" (RARE!)":"")+"!");own[an_[0]]=(own[an_[0]]||0)+1;saveOwn()}
+  const el=document.createElement("div");el.className="animal";el.textContent=an_[0];
+  const fromL=Math.random()<.5,[x,y]=pos(zone);
+  el.style.left=(fromL?-12:104)+"vw";el.style.top=y+"vh";
+  $("scene").appendChild(el);
+  const a={el,x:fromL?-12:104,id:++aid+"-"+Math.random().toString(36).slice(2,6),e:an_[0],sx:fromL?-12:104,y,v:0};animals.push(a);upd();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>move(a,x,y)));
+  a.timer=setInterval(()=>{if(held)return;const[nx,ny]=pos(zone);move(a,nx,ny)},4000+Math.random()*3000);
+}
+function move(a,x,y){
+  const d=3+Math.random()*3;a.d=d;a.f=x>a.x;a.tx=x;a.ty=y;a.v++;
+  a.el.style.transitionDuration=d+"s";
+  a.el.style.transform=a.f?"scaleX(-1)":"none";a.x=x;
+  a.el.style.left=x+"vw";a.el.style.top=y+"vh";
+}
+function leaveOne(){
+  if(!animals.length)return;
+  const a=animals.splice(Math.floor(Math.random()*animals.length),1)[0];
+  clearInterval(a.timer);upd();
+  const right=a.x>50;a.el.style.transitionDuration="1.8s";
+  a.el.style.transform=right?"scaleX(-1)":"none";
+  a.el.style.left=(right?112:-18)+"vw";
+  setTimeout(()=>a.el.remove(),2000);
+}
+function hold(on){
+  if(on===held)return;held=on;
+  if(on)animals.forEach(a=>{const cs=getComputedStyle(a.el);a.el.style.transitionDuration="0s";a.el.style.left=cs.left;a.el.style.top=cs.top});
+}
+
+// Microphone
+async function listMics(){
+  try{const d=(await navigator.mediaDevices.enumerateDevices()).filter(x=>x.kind==="audioinput");
+    $("mic").innerHTML='<option value="">Default microphone</option>';
+    d.forEach((x,i)=>{if(!x.deviceId||x.deviceId==="default")return;const o=document.createElement("option");o.value=x.deviceId;o.textContent=x.label||"Microphone "+(i+1);$("mic").appendChild(o)});
+    if(S.mic&&[...$("mic").options].some(o=>o.value===S.mic))$("mic").value=S.mic;
+  }catch(e){}
+}
+function stopMic(){if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;an=null;micOn=false}
+async function openMic(){
+  stopMic();
+  stream=await navigator.mediaDevices.getUserMedia({audio:{deviceId:S.mic?{exact:S.mic}:undefined,echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+  ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+  if(ctx.state==="suspended")await ctx.resume();
+  an=ctx.createAnalyser();an.fftSize=1024;ctx.createMediaStreamSource(stream).connect(an);
+  buf=new Uint8Array(an.fftSize);micOn=true;listMics();
+}
+$("mic").onchange=async e=>{S.mic=e.target.value;save();if(micOn){try{await openMic()}catch(x){}}};
+const begin=()=>{$("start").style.display="none";nextAt=performance.now()+3000;startHost()};
+$("go").onclick=async()=>{try{await openMic();begin()}catch(e){$("msg").textContent="Couldn’t reach the microphone. Allow mic access in your browser and try again."}};
+$("cal").onclick=()=>{
+  if(!an){$("calTxt").textContent="Turn the microphone on first (little mic button)";return}
+  cal={s:0,n:0,t:performance.now()+3000};$("calTxt").textContent="Listening… keep the room quiet for 3 seconds";$("cal").disabled=true;
+};
+function finishCal(){
+  const avg=cal.s/Math.max(1,cal.n);cal=null;$("cal").disabled=false;
+  S.gain=clamp(0.0225/Math.max(avg,.0005),0.2,40);save();$("calTxt").textContent="Done! A quiet room now reads about 6%.";
+}
+
+// ---- Multiplayer (PeerJS: peer-to-peer, no mic audio is ever sent) ----
+let peer=null,conns=[],code="",vAn=new Map(),vFirst=true,lastS="";
+const CH="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const genCode=()=>Array.from({length:5},()=>CH[Math.floor(Math.random()*CH.length)]).join("");
+const watchTxt=()=>$("watch").textContent=conns.length?conns.length+" watching":"Nobody watching yet";
+function startHost(c0){
+  if(typeof Peer==="undefined"){$("codeTxt").textContent="—";$("watch").textContent="Needs internet";return}
+  if(peer){try{peer.destroy()}catch(e){}}
+  conns=[];code=c0||S.code||genCode();$("codeTxt").textContent="…";$("watch").textContent="Connecting…";
+  const p=peer=new Peer("qcs-"+code);
+  p.on("open",()=>{S.code=code;save();$("codeTxt").textContent=code;watchTxt()});
+  p.on("error",e=>{if(e.type==="unavailable-id")startHost(genCode());else $("watch").textContent="Connection problem"});
+  p.on("connection",c=>{c.on("open",()=>{conns.push(c);watchTxt();c.send(snap(1))});const gone=()=>{conns=conns.filter(x=>x!==c);watchTxt()};c.on("close",gone);c.on("error",gone)});
+}
+function snap(first){return{h:S.hab,l:Math.round(level),p:paused,o:loud,d:held,f:first?1:0,own,
+  S:{limit:S.limit,preset:S.preset,num:S.num,freq:S.freq,loud:S.loud,showMeter:S.showMeter,showCount:S.showCount,showOwn:S.showOwn},
+  a:animals.filter(a=>a.tx!==undefined).map(a=>({i:a.id,e:a.e,s:a.sx,y:a.y,x:a.tx,t:a.ty,d:a.d,f:a.f,v:a.v}))}}
+setInterval(()=>{if(!V&&conns.length){const m=snap();conns.forEach(c=>{if(c.open)c.send(m)})}},400);
+$("newCode").onclick=()=>startHost(genCode());
+$("leave").onclick=()=>location.reload();
+$("joinBtn").onclick=()=>{const i=$("codeIn");if(i.style.display!=="inline-block"){i.style.display="inline-block";i.focus();$("joinBtn").textContent="Join";return}joinCode(i.value)};
+$("codeIn").onkeydown=e=>{if(e.key==="Enter")$("joinBtn").onclick()};
+function joinCode(raw){
+  const c=raw.trim().toUpperCase();if(c.length<5){$("msg").textContent="Enter the 5 letter code";return}
+  if(typeof Peer==="undefined"){$("msg").textContent="Needs an internet connection";return}
+  $("msg").textContent="Joining…";let done=false;
+  const p=new Peer();peer=p;
+  const fail=t=>{if(done)return;done=true;$("msg").textContent=t;try{p.destroy()}catch(e){}};
+  const to=setTimeout(()=>fail("Couldn’t find that class. Check the code."),9000);
+  p.on("error",e=>{clearTimeout(to);fail(e.type==="peer-unavailable"?"Couldn’t find that class. Check the code.":"Connection problem. Try again.")});
+  p.on("open",()=>{const conn=p.connect("qcs-"+c,{serialization:"json",reliable:true});
+    conn.on("open",()=>{clearTimeout(to);done=true;V=true;document.body.classList.add("viewer");$("ro").inert=true;$("start").style.display="none";clearAnimals();$("msg").textContent=""});
+    conn.on("data",applySnap);
+    conn.on("close",()=>{if(done){toast("The class ended");setTimeout(()=>location.reload(),1500)}})});
+}
+function applySnap(m){
+  if(m.h!==S.hab||vFirst){S.hab=m.h;scene(m.h);vAn.forEach(a=>a.el.remove());vAn.clear()}
+  const ss=JSON.stringify(m.S);Object.assign(S,m.S);own=m.own||{};
+  vLvl=m.l;paused=m.p;loud=m.o;
+  $("pause").textContent=paused?"▶":"❚❚";$("ptag").style.display=paused?"block":"none";
+  const ids=new Set();
+  m.a.forEach(r=>{ids.add(r.i);let a=vAn.get(r.i);
+    if(!a){const el=document.createElement("div");el.className="animal";el.textContent=r.e;$("scene").appendChild(el);
+      a={el,x:r.s,v:-1};vAn.set(r.i,a);
+      if(vFirst||m.f){el.style.transitionDuration="0s";el.style.left=r.x+"vw";el.style.top=r.t+"vh";el.style.transform=r.f?"scaleX(-1)":"none";a.x=r.x;a.v=r.v}
+      else{el.style.left=r.s+"vw";el.style.top=r.y+"vh"}}
+    if(r.v!==a.v){a.v=r.v;if(!m.d)requestAnimationFrame(()=>requestAnimationFrame(()=>{a.el.style.transitionDuration=r.d+"s";a.el.style.transform=r.f?"scaleX(-1)":"none";a.x=r.x;a.el.style.left=r.x+"vw";a.el.style.top=r.t+"vh"}))}
+  });
+  vAn.forEach((a,id)=>{if(!ids.has(id)){vAn.delete(id);const right=a.x>50;a.el.style.transitionDuration="1.8s";a.el.style.transform=right?"scaleX(-1)":"none";a.el.style.left=(right?112:-18)+"vw";setTimeout(()=>a.el.remove(),2000)}});
+  if(m.d&&!vHeld){vHeld=true;vAn.forEach(a=>{const cs=getComputedStyle(a.el);a.el.style.transitionDuration="0s";a.el.style.left=cs.left;a.el.style.top=cs.top})}
+  else if(!m.d)vHeld=false;
+  upd();if(vFirst||ss!==lastS){lastS=ss;ui()}vFirst=false;
+}
+
+function tick(now){
+  if(V){level=vLvl;const l=Math.round(level);$("lvl").textContent=l;["mfill","sfill"].forEach(i=>{$(i).style.width=l+"%";$(i).classList.toggle("hi",level>=S.limit)});const st=$("stat");st.textContent=paused?"Paused":loud?"Too loud":"Animals are arriving";st.className="stat"+(paused?" pz":loud?" bad":"");requestAnimationFrame(tick);return}
+  rms=0;let raw=0;
+  if(an){an.getByteTimeDomainData(buf);let s=0;for(const v of buf){const d=(v-128)/128;s+=d*d}rms=Math.sqrt(s/buf.length);raw=Math.min(100,rms*400*S.gain/1.5)}
+  level=level*.85+raw*.15;
+  if(cal){cal.s+=rms;cal.n++;if(now>cal.t)finishCal()}
+  const l=Math.round(level);$("lvl").textContent=l;
+  ["mfill","sfill"].forEach(i=>{$(i).style.width=l+"%";$(i).classList.toggle("hi",level>=S.limit)});
+  const was=loud;
+  if(!loud&&level>S.limit)loud=true;else if(loud&&level<Math.max(0,S.limit-3))loud=false;
+  if(loud&&!was)lastRun=now;
+  hold(paused||loud);
+  const st=$("stat");st.textContent=paused?"Paused":loud?"Too loud":"Animals are arriving";st.className="stat"+(paused?" pz":loud?" bad":"");
+  if(!paused&&!loud&&now>=nextAt){
+    nextAt=now+S.freq*60000*(.8+Math.random()*.4);
+    for(let i=0;i<S.num;i++)setTimeout(()=>{if(!paused&&!loud)spawn()},i*500);
+  }
+  if(!paused&&loud&&S.loud==="run"&&now-lastRun>5000){lastRun=now;const n=Math.max(1,Math.ceil(animals.length*.25));for(let i=0;i<n;i++)leaveOne()}
+  requestAnimationFrame(tick);
+}
+scene(S.hab);ui();upd();requestAnimationFrame(tick);
+</script>
+</body>
+</html>

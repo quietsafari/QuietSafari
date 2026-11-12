@@ -102,7 +102,11 @@ h4{margin:26px 0 10px;font-size:15px;letter-spacing:.08em;text-transform:upperca
 <div id="scene"><div id="bg"></div><div id="fx"></div></div>
 
 <div id="top">
-  <div class="grp"><div class="round">🦁</div><div class="pillb" id="pCount">🐾 Animals: <span id="count">0</span></div></div>
+  <div class="grp">
+    <div class="round">🦁</div>
+    <button class="round" id="fullscreenBtn" aria-label="Toggle Fullscreen">⛶</button>
+    <div class="pillb" id="pCount">🐾 Animals: <span id="count">0</span></div>
+  </div>
   <div class="pillb" id="pOwn">🏆 <span id="own">0</span></div>
 </div>
 <div id="mbar"><div class="mrow"><span>🔊 Noise</span><span><span id="lvl">0</span>%</span></div><div class="bar"><div class="fill" id="mfill"></div><div class="line" id="mline"></div></div></div>
@@ -281,6 +285,18 @@ $("reset").onclick=()=>ask("Are you sure you want to reset?",()=>{clearAnimals()
 $("pause").onclick=()=>{paused=!paused;$("pause").textContent=paused?"▶":"❚❚";$("ptag").style.display=paused?"block":"none"};
 $("help").onclick=()=>toast("Stay quiet and animals arrive. When it gets loud they freeze and run away!",4500);
 $("all").onclick=()=>{A.filter(a=>a[4].split(",").includes(S.hab)).forEach((a,i)=>setTimeout(()=>spawn(a,true),i*250));$("set").classList.remove("open")};
+
+$("fullscreenBtn").onclick = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.error(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+};
 
 // Animals page
 function chipsHTML(sel){return HO.map(k=>`<button class="chip ${k===sel?"on":""}" data-h="${k}">${HN[k]}</button>`).join("")}
